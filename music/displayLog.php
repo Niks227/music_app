@@ -1,5 +1,5 @@
 <?php
-include 'loggingAndDebugging.php';
+include 'generateLog.php';
 set_time_limit(0);
 /**
 * 
@@ -11,7 +11,7 @@ class displayLog
 	function __construct()
 	{
 				echo "<h3><u>LOG FILE</u></h3>";
-				$this->no        =    loggingAndDebugging::getLatestLogFile();	
+				$this->no        =    generateLog::getLatestLogFile();	
 				$this->logLength =    -1;
 				
 	}

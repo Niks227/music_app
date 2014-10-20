@@ -1,5 +1,6 @@
 <?php
-global $log;
+
+//session_start();
 /**
 * 
 */
@@ -7,12 +8,12 @@ class music_manager
 {
 	
 	function __construct()
-	{	$log->info("music_manager","Music Manager Started its Work");
+	{	
             
 	}
 	public static function run($file)
 	{	
-		
+		$_SESSION["logObject"]->info("music_manager","Music Manager Started its Work");
 		include 'gracenote.php';
 		include 'file_parser.php';
 		include 'album_art_finder.php';
@@ -22,33 +23,39 @@ class music_manager
 		include '../music/databaseModels/user_songs_handler.php';
 		include '../music/databaseModels/unidentified_fps_handler.php';
 
-
+		$_SESSION["logObject"]->debug("music_manager","Fetching User Number");
 		$myNumber = file_parser::get_myNumber($file);
+		$_SESSION["logObject"]->debug("music_manager","Fetching Command");
 		$cmd = file_parser::get_cmd($file);
 		
 		switch ($cmd) {
 			case "add":
 			//	echo "<br>Started adding songs";
+			$_SESSION["logObject"]->debug("music_manager","Command - ADD ");
 				music_manager::add_songs($file,$myNumber);	
 
 				break;
 			case "delete":
 			//	echo "Started deleting songs";
+			$_SESSION["logObject"]->debug("music_manager","Command - Delete ");
 				music_manager::delete_songs($file,$myNumber);
 
 				break;
 			case "getSongsList":
 			//	echo "<br>Getting songs";
+			$_SESSION["logObject"]->debug("music_manager","Command - getSongList ");
 				music_manager::get_songs_list($myNumber);
 
 				break;
 
 			case "getSongStatus":
 			//	echo "<br>Getting Song Status";
+			$_SESSION["logObject"]->debug("music_manager","Command - getSongStatus ");
 				music_manager::get_song_status($file,$myNumber);
 				
 				break;
 			default:
+			$_SESSION["logObject"]->error("music_manager","Command - Not Recognised ");
 			    echo "Cmd not recognized";
 			
 				break;
@@ -150,9 +157,11 @@ class music_manager
 								\"status\":\"1\"
 							 } 
 						";
+			$_SESSION["logObject"]->info("music_manager","Freeing User's Browser ");
 			music_manager::freeUserBrowser($response);
+			$_SESSION["logObject"]->debug("music_manager","From the recived json file organise all songs information in an array ");
 			$songs_array = file_parser::get_songs_array($file);
-		
+			$_SESSION["logObject"]->debug("music_manager","For each Song repeat identification algorithms");
 			foreach ($songs_array as $song) {
 				
 				$fp_xml = $song['xml'];
@@ -163,32 +172,44 @@ class music_manager
 				$fp = $song['fingerprint'];
 				$duration = $song['duration']; 
 			
-				echo "<BR><h1>NewSong</h1>";
+				
+				$_SESSION["logObject"]->debug("music_manager","New Song");
+				$_SESSION["logObject"]->debug("music_manager","Ussing Gracenote");
 				$data = gracenote::gracenote_details($fp_algo , $fp_ver , $fp);
-				//var_dump($data);
+				
 
                                
 				if(strcmp($data["RESPONSE"]["@attributes"]["STATUS"],"OK")==0){
 					
-					echo "<br>Gracnote worked.. <h2> :) </h2>";
+					$_SESSION["logObject"]->debug("music_manager","Gracenote Worked :) ");
+					
 					
 					$gracenote_title = file_parser::get_gracenote_title($data);
 					$gracenote_album = file_parser::get_gracenote_album($data);
 					$gracenote_artist = file_parser::get_gracenote_artist($data);
 					$gracenote_genre = file_parser::get_gracenote_genre($data);
 					$gracenote_date = file_parser::get_gracenote_date($data);
-						
+					$_SESSION["logObject"]->debug("music_manager","Gracenote Title - $gracenote_title");
+					$_SESSION["logObject"]->debug("music_manager","Gracenote Album - $gracenote_album");
+					$_SESSION["logObject"]->debug("music_manager","Gracenote Artist - $gracenote_artist");
+					$_SESSION["logObject"]->debug("music_manager","Gracenote genre - $gracenote_genre");
+					$_SESSION["logObject"]->debug("music_manager","Gracenote Date - $gracenote_date");	
+					
+					$_SESSION["logObject"]->debug("music_manager","Proceeding to further Steps");
 					music_manager::proceed($fp_xml , $myNumber,$gracenote_title , $gracenote_album , $gracenote_artist ,$gracenote_genre , $gracenote_date , $duration);
 
 				}
 				else{
-					echo "<br>Granote could not work.. <h2> :( </h2>";
+					$_SESSION["logObject"]->debug("music_manager","Gracenote could not work.. :( ");
+					$_SESSION["logObject"]->debug("music_manager","Will Proceed to old algorithm");
 //					old_algo();
 //					if(old_algo_status=='ok'){
 //							proceed();
 //					}
 //					else{
 //						echo "stroe incomlete in table";
+					$_SESSION["logObject"]->debug("music_manager","After failure of gracenote if Old Algo also fail");
+					$_SESSION["logObject"]->debug("music_manager","Then insert in unidentified fingerprints");
 						unidentified_fps_handler::insert_unidentified_fp($fp_xml, $myNumber);
 //					}
 
@@ -201,10 +222,14 @@ class music_manager
 	{
 		
 
+			$_SESSION["logObject"]->debug("music_manager","Assigning Song Id");
 			$song_id = music_manager::assign_song_id($gracenote_title,$gracenote_album,$gracenote_artist);
-			echo "<br>Song ID-->".$song_id."<br>";
+			$_SESSION["logObject"]->debug("music_manager","Sonng Id - $song_id");
+			$_SESSION["logObject"]->debug("music_manager","Album Art Fetching Started");
 			$art_url = 	album_art_finder::get_album_art($gracenote_title , $gracenote_album , $gracenote_artist);
+			$_SESSION["logObject"]->debug("music_manager","Will fetch Song link");
 			//---->>>songLinkFetching();
+			$_SESSION["logObject"]->debug("music_manager","Storing Data successfully in Database");
 			music_data_handler::store_music_data($song_id , $gracenote_title , $gracenote_album , $gracenote_artist ,$gracenote_genre , $duration ,  $gracenote_date , $art_url);
 			user_songs_handler::add_user_song($myNumber , $song_id , $fp_xml);
 	}
