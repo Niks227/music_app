@@ -13,7 +13,7 @@ class gracenote
 	}
     public static function gracenote_details($fp_algo , $fp_ver , $fp){
                     $_SESSION["logObject"]->debug("gracenote","Gracenoting started");
-                    $url = 'http://gracenote.96.lt/query.php';
+                    $url = 'http://gracenotehostinger.esy.es/query.php';
                     $data = array('fp' => "$fp", 'fp_algo' => "$fp_algo", 'fp_ver' => "$fp_ver");
 
                     // use key 'http' even if you send the request to https://...
