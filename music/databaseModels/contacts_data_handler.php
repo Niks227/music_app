@@ -62,16 +62,19 @@
 		//		echo "Marking friend  as wanted";
 				include "sqli_connect.php";
 				$wflag = contacts_data_handler::$wanted_flag ; 
-				$uid = mysql_real_escape_string($uid);
-				$friend = mysql_real_escape_string($friend); 
-				$queryCheckFriendExist = "SELECT * FROM `contacts` WHERE `frnd_id` = '$friend' ";
+			//	$uid = mysql_real_escape_string($uid);
+			//	$friend = mysql_real_escape_string($friend); 
+				$queryCheckFriendExist = "SELECT * FROM `contacts` WHERE  `uid`= '$uid' AND `frnd_id` = '$friend' ";
 				$resultCheckFriendExist = $con->query($queryCheckFriendExist);
+$_SESSION["logObject"]->info("reciver","check friend exist------>>>> $queryCheckFriendExist");
 				if($resultCheckFriendExist) // will return true if succefull else it will return false
 				{
 						if ($con->affected_rows == 1) {
 						//	echo "Friend Found";
 							$queryMakeWanted = "UPDATE `contacts` SET `filter_flag`= '$wflag' WHERE uid = '$uid' AND frnd_id = '$friend' ";
+
 			    			$resultMakeWanted = $con->query($queryMakeWanted);
+$_SESSION["logObject"]->info("reciver","check friend exist------>>>> $queryMakeWanted");
 								if($resultMakeWanted) // will return true if succefull else it will return false
 								{
 						//				echo "UPDATED successfully";
@@ -96,9 +99,10 @@
 		//		echo "Marking friend  as unwanted";
 				include "sqli_connect.php";
 				$uwflag = contacts_data_handler::$unwanted_flag ;
-				$uid = mysql_real_escape_string($uid);
-				$friend = mysql_real_escape_string($friend); 
-				$queryCheckFriendExist = "SELECT * FROM `contacts` WHERE `frnd_id` = '$friend' ";
+			//	$uid = mysql_real_escape_string($uid);
+			//	$friend = mysql_real_escape_string($friend); 
+				$queryCheckFriendExist = "SELECT * FROM `contacts` WHERE `uid`= '$uid' AND `frnd_id` = '$friend' ";
+$_SESSION["logObject"]->info("reciver","check friend exist------>>>> $queryCheckFriendExist");
 				$resultCheckFriendExist = $con->query($queryCheckFriendExist);
 				if($resultCheckFriendExist) // will return true if succefull else it will return false
 				{
@@ -106,6 +110,8 @@
 //							echo "Friend Found";
 							$queryMakeUnwanted = "UPDATE `contacts` SET `filter_flag`= '$uwflag' WHERE uid = '$uid' AND frnd_id = '$friend' ";
 			    			$resultMakeUnwanted = $con->query($queryMakeUnwanted);
+$_SESSION["logObject"]->info("reciver","check friend exist------>>>> $queryMakeUnwanted");
+
 								if($resultMakeUnwanted) // will return true if succefull else it will return false
 								{
 //										echo "UPDATED successfully";
@@ -202,7 +208,8 @@
 		}
 		public static function get_friends_data($uid)
 		{
-				$_SESSION["logObject"]->info("contacts_data_handler","Fetching Friends Data from database");
+ $count = 0;				
+ $_SESSION["logObject"]->info("contacts_data_handler","Fetching Friends Data from database");
 				$friendsData = array();
 				$status = 0;
 				$friendsData['myNumber'] = $uid;
@@ -221,12 +228,15 @@
 				if($result->num_rows>=1){
 					$_SESSION["logObject"]->info("contacts_data_handler","Friends Found.. Organising information in array");
 					while ($row = $result->fetch_assoc()) {
+$count++;
 						$friendsData['friends'][$i]['number'] = $row['frnd_id'];	
 						$friendsData['friends'][$i]['filter_flag'] = $row['filter_flag'];
 						$_SESSION["logObject"]->debug("contacts_data_handler","Friend-  $row[frnd_id]");
 						$_SESSION["logObject"]->debug("contacts_data_handler","Filter Flag- $row[filter_flag]");
 						$i++;
 					} 
+$_SESSION["logObject"]->debug("contacts_data_handler","Count $count");
+						
 	       				
 	    		}
 	    		else{

@@ -8,6 +8,7 @@ $_SESSION["logObject"] = $log;
 //Work of reciver starts here
 	
 	$file = get_post_data();
+
 	$module = module_identification($file);
     call_module_manager($module,$file);
 
@@ -20,8 +21,8 @@ $_SESSION["logObject"] = $log;
 				$postdata = file_get_contents("php://input");
                 $file = urldecode($postdata);
                 //Comment this line when posting data through android 
-                $file = substr($file , 2);
-                $_SESSION["logObject"]->info("reciver","Post Data Recived");	
+                //$file = substr($file , 2);
+                $_SESSION["logObject"]->info("reciver","Post Data Recived------>>>> $file");	
 				return $file;
 	}
 	//Function to identify module 
