@@ -1,9 +1,11 @@
 <?php
+	
 //localhost
 	$SQL_SERVER = 'localhost';
 	$SQL_USER = 'root';
 	$SQL_PASS = '';
 	$SQL_DB = 'music_app';
+
 //5gbfree
 /*	
 	$SQL_SERVER = 'localhost';
