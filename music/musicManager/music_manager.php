@@ -1,9 +1,5 @@
 <?php
 
-//session_start();
-/**
-* 
-*/
 class music_manager
 {
 	
@@ -55,7 +51,7 @@ class music_manager
 				
 				break;
 			default:
-			$_SESSION["logObject"]->error("music_manager","Command - Not Recognised ");
+			$_SESSION["logObject"]->error("music_manager","Command - Not Recognized ");
 			    echo "Cmd not recognized";
 			
 				break;
@@ -159,7 +155,7 @@ class music_manager
 						";
 			$_SESSION["logObject"]->info("music_manager","Freeing User's Browser ");
 			music_manager::freeUserBrowser($response);
-			$_SESSION["logObject"]->debug("music_manager","From the recived json file organise all songs information in an array ");
+			$_SESSION["logObject"]->debug("music_manager","From the received json file organise all songs information in an array ");
 			$songs_array = file_parser::get_songs_array($file);
 			$_SESSION["logObject"]->debug("music_manager","For each Song repeat identification algorithms");
 			foreach ($songs_array as $song) {
@@ -174,14 +170,14 @@ class music_manager
 			
 				
 				$_SESSION["logObject"]->debug("music_manager","New Song");
-				$_SESSION["logObject"]->debug("music_manager","Ussing Gracenote");
+				$_SESSION["logObject"]->debug("music_manager","Using Grace-note");
 				$data = gracenote::gracenote_details($fp_algo , $fp_ver , $fp);
 				
 
                                
 				if(strcmp($data["RESPONSE"]["@attributes"]["STATUS"],"OK")==0){
 					
-					$_SESSION["logObject"]->debug("music_manager","Gracenote Worked :) ");
+					$_SESSION["logObject"]->debug("music_manager","Grace-note Worked :) ");
 					
 					
 					$gracenote_title = file_parser::get_gracenote_title($data);
@@ -200,21 +196,23 @@ class music_manager
 
 				}
 				else{
-					$_SESSION["logObject"]->debug("music_manager","Gracenote could not work.. :( ");
+					$_SESSION["logObject"]->debug("music_manager","Grace-note could not work.. :( ");
 					$_SESSION["logObject"]->debug("music_manager","Will Proceed to old algorithm");
 //					old_algo();
 //					if(old_algo_status=='ok'){
 //							proceed();
 //					}
 //					else{
-//						echo "stroe incomlete in table";
-					$_SESSION["logObject"]->debug("music_manager","After failure of gracenote if Old Algo also fail");
+//						echo "store incomplete in table";
+					$_SESSION["logObject"]->debug("music_manager","After failure of grace-note if Old Algo also fail");
 					$_SESSION["logObject"]->debug("music_manager","Then insert in unidentified fingerprints");
 						unidentified_fps_handler::insert_unidentified_fp($fp_xml, $myNumber);
 //					}
 
 				}	
 			}
+			$_SESSION["logObject"]->info("music_manager","All Songs Done!!");
+			
 
 
 	}
@@ -224,7 +222,7 @@ class music_manager
 
 			$_SESSION["logObject"]->debug("music_manager","Assigning Song Id");
 			$song_id = music_manager::assign_song_id($gracenote_title,$gracenote_album,$gracenote_artist);
-			$_SESSION["logObject"]->debug("music_manager","Sonng Id - $song_id");
+			$_SESSION["logObject"]->debug("music_manager","Song Id - $song_id");
 			$_SESSION["logObject"]->debug("music_manager","Album Art Fetching Started");
 			$art_url = 	album_art_finder::get_album_art($gracenote_title , $gracenote_album , $gracenote_artist);
 			$_SESSION["logObject"]->debug("music_manager","Will fetch Song link");

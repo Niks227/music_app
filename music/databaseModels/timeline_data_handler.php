@@ -31,11 +31,11 @@
 		}
 		public static function get_friends_sids($friends)
 		{
-			echo "Getting sids";
+			
 			include "sqli_connect.php";
 			$sids='';
 			$query = " SELECT sids FROM timeline_data WHERE uid IN ($friends) "; 
-			echo $query;
+			
 						
 
 			$result = $con->query($query);
@@ -76,19 +76,33 @@
 				
 				$result = $con->query("INSERT INTO timeline_data (uid, sids, scores)
 												VALUES ('$uid' , '$songs_ids' , '$scores')");
- 				
- 				include "sqli_close.php";
+				if($result) // will return true if querry ran successfully else it will return false
+				{//echo "chall gayyaaa!!!";
+					$status = 1;
+				}
+				else{
+					$status = 0;
+				}
+				include "sqli_close.php";
  				echo "New user added<br>";
+ 				return $status;
 		}
 		public static function insert_updated_data($uid , $songs_ids , $scores){
 				include "sqli_connect.php";
 			
 			
 				$result = $con->query("UPDATE timeline_data SET sids='$songs_ids',scores ='$scores' where uid = '$uid'");
- 				
+ 				if($result) // will return true if querry ran successfully else it will return false
+				{
+					$status = 1;
+				}
+				else{
+					$status = 0;
+				}
  				
  				include "sqli_close.php";
  				echo "<br>User data updated";
+ 				return $status;
 		}
 		public static function delete_user($uid){
 

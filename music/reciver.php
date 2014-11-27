@@ -8,6 +8,7 @@ $_SESSION["logObject"] = $log;
 //Work of reciver starts here
 	
 	$file = get_post_data();
+
 	$module = module_identification($file);
     call_module_manager($module,$file);
 
@@ -21,7 +22,7 @@ $_SESSION["logObject"] = $log;
                 $file = urldecode($postdata);
                 //Comment this line when posting data through android 
                 $file = substr($file , 2);
-                $_SESSION["logObject"]->debug("reciver","Post Data Recived");	
+                $_SESSION["logObject"]->info("reciver","Post Data Recived------>>>> $file");	
 				return $file;
 	}
 	//Function to identify module 
@@ -73,7 +74,7 @@ $_SESSION["logObject"] = $log;
 			//Check file type is json or not
  			if((json_last_error() == JSON_ERROR_NONE)==1){
  				
-				$_SESSION["logObject"]->debug("reciver","Module Identified - ' $decoded_string->module '"); 
+				$_SESSION["logObject"]->info("reciver","Module Identified - ' $decoded_string->module '"); 
  				return $decoded_string->module;
  			}
  			else{
@@ -91,27 +92,27 @@ $_SESSION["logObject"] = $log;
 	//Function to call manager of specified module
 	function call_module_manager($module,$file)
 	{	
-		if(strcmp($module, "generate_timeline")== 0){
-				$_SESSION["logObject"]->debug("reciver","Calling Generate Timeline Module Manager");
+		if(strcmp($module, "generateTimeline")== 0){
+				$_SESSION["logObject"]->info("reciver","Calling Generate Timeline Module Manager");
 				//echo "<h1>MODULE - <u>Generate Timeline</u> </h1><br>";
 				include 'generateTimeline/timeline_view_manager.php';
 				timeline_view_manager::run($file);
 		
 		}
-		else if(strcmp($module, "store_timeline_data")== 0){
-				$_SESSION["logObject"]->debug("reciver","Calling Store Timeline Data Module Manager");
+		else if(strcmp($module, "storeTimelineData")== 0){
+				$_SESSION["logObject"]->info("reciver","Calling Store Timeline Data Module Manager");
 				//echo "<h1>MODULE - <u>Store Timeline Data </u> </h1><br>";
 				include 'storeTimelineData/timeline_data_manager.php';
 				timeline_data_manager::run($file);
 		}
 	    else if(strcmp($module, "contact")== 0){
-	    		$_SESSION["logObject"]->debug("reciver","Calling Contacts Manager Module Manager");
+	    		$_SESSION["logObject"]->info("reciver","Calling Contacts Manager Module Manager");
 				//echo "<h1>MODULE - <u>Contacts Manager </u> </h1><br>";
 				include 'contactsManager/contacts_manager.php';
 				contacts_manager::run($file);
 		}	
 		else if(strcmp($module, "music")== 0){
-				$_SESSION["logObject"]->debug("reciver","Calling Music Module Manager");
+				$_SESSION["logObject"]->info("reciver","Calling Music Module Manager");
 				//echo "<h1>MODULE - <u>Music Module</u> </h1> <br>";
 				include 'musicManager/music_manager.php';
 				music_manager::run($file);

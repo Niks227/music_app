@@ -10,10 +10,10 @@
 		}
 		public static function get_user_no($file)
 		{	
-			echo "Getting user no... <br>";
-                        $file = stripslashes($file);   
+		//	echo "Getting user no... <br>";
+            $file = stripslashes($file);   
 			$decoded_string = json_decode($file);
-	  		return $decoded_string->details->user_no;
+	  		return $decoded_string->myNumber;
 	  		//checkk userno validity
 			
 		}
