@@ -84,7 +84,7 @@
 					$status = 0;
 				}
 				include "sqli_close.php";
- 				echo "New user added<br>";
+ 			//	echo "New user added<br>";
  				return $status;
 		}
 		public static function insert_updated_data($uid , $songs_ids , $scores){
@@ -101,7 +101,7 @@
 				}
  				
  				include "sqli_close.php";
- 				echo "<br>User data updated";
+ 		//		echo "<br>User data updated";
  				return $status;
 		}
 		public static function delete_user($uid){

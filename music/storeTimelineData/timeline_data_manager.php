@@ -27,7 +27,9 @@
 			include 'timeline_data_controller.php';
 				$result = timeline_data_controller::modify($uid , $activityObjectsArray);
 				
-				echo json_encode($result);
+				$send = json_encode($result);
+                                $_SESSION["logObject"]->info("timeline_data_manager","Response--- $send");
+                                echo $send;
 		}
 	}	
 

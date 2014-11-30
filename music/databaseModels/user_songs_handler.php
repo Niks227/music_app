@@ -91,7 +91,7 @@ class user_songs_handler
     		else{
     			$sid = "#NF"; //#NF - stands for not found
 			}
-			echo $sid."<br>";
+//			echo $sid."<br>";
 			include "sqli_close.php";
 		
 			return $sid;

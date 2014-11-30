@@ -34,7 +34,7 @@ class generateLog
 				$txt = "<font color=\"red\"><Error>   $timeStamp --->> ($tag) $string</font><br>\n";
 				fwrite(generateLog::$myfile, $txt);
 	}
-	public function warning($tag,$string)
+	public function end($tag,$string)
 	{
 				$timeStamp = generateLog::getTime();
 				$txt = "<font color=\"orange\"><Warning> $timeStamp --->> ($tag) $string</font><br>\n";

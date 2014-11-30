@@ -29,33 +29,33 @@
 						$i++;
 				}
 				elseif ($object->get_streaming()==1) {
-						echo "sound CLoud";
+		//				echo "sound CLoud";
 						$replyUserAvtivity['response'][$i]["postId"] = $object->get_postId();
 						$replyUserAvtivity['response'][$i]["songStatus"] = 0;
 						$i++;
 				}	
 			}
-			echo "<br> New Sids ".$new_sids;
-			echo "<br> New Scores ".$new_scores."<br>";
+		///	echo "<br> New Sids ".$new_sids;
+		//	echo "<br> New Scores ".$new_scores."<br>";
 			
 			include '../music/databaseModels/timeline_data_handler.php';
 			$result = timeline_data_handler::check_existence($uid);
-			echo "Checing if user exist or a new user<br>";
+		//	echo "Checing if user exist or a new user<br>";
 			if($result==1){
-				echo "User already exists<br>";
+		//		echo "User already exists<br>";
 				$old_sids = timeline_data_handler::get_sids($uid);
 				$old_scores = timeline_data_handler::get_scores($uid);
-				echo "<br> Old Sids found  - $old_sids <br> Old Scores found - $old_scores<br>";
+		//		echo "<br> Old Sids found  - $old_sids <br> Old Scores found - $old_scores<br>";
 				$sqlStatus = timeline_data_controller::update_data($uid , $old_sids , $new_sids , $old_scores , $new_scores);
 			}
 			else{
-				echo "User not exist<br>";
+		//		echo "User not exist<br>";
 				if(strcmp($new_sids, '') != 0){
 						$sqlStatus =timeline_data_handler::add_user($uid , $new_sids , $new_scores);
-						echo $sqlStatus;
+		//				echo $sqlStatus;
 				}
 				else{
-					echo "No Songs to add";
+		//			echo "No Songs to add";
 					$sqlStatus = 0;
 				}
 			} 
@@ -67,7 +67,7 @@
 		}
 		public static function  update_data($uid , $old_sids , $new_sids , $old_scores , $new_scores)
 		{	
-				echo "<br>Updating data<br>";
+		//		echo "<br>Updating data<br>";
 				$SCORE_SIZE = 9;
 				$SID_SIZE = 10;
 				$all_sids = $old_sids . $new_sids;
@@ -98,9 +98,9 @@
 						$scores_string = $scores_string . $sidList[$key];
 
 					}
-					echo "<br> $sids_string <br> $scores_string";
+		//			echo "<br> $sids_string <br> $scores_string";
 					$sqlStatus = timeline_data_handler::insert_updated_data($uid , $sids_string , $scores_string);					
-					echo "$sqlStatus";
+		//			echo "$sqlStatus";
 					return $sqlStatus;
 		}
 

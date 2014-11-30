@@ -16,6 +16,7 @@ class loggingAndDebugging
 				$txt = "<font color=\"green\"><Info>    $timeStamp --->> New Log File Created</font><br>\n";
 				fwrite(loggingAndDebugging::$myfile, $txt);
 	}
+	
 	public function info($tag,$string)
 	{
 				$timeStamp = loggingAndDebugging::getTime();
@@ -34,7 +35,7 @@ class loggingAndDebugging
 				$txt = "<font color=\"red\"><Error>   $timeStamp --->> ($tag) $string</font><br>\n";
 				fwrite(loggingAndDebugging::$myfile, $txt);
 	}
-	public function warning($tag,$string)
+	public function end($tag,$string)
 	{
 				$timeStamp = loggingAndDebugging::getTime();
 				$txt = "<font color=\"orange\"><Warning> $timeStamp --->> ($tag) $string</font><br>\n";

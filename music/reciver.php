@@ -5,14 +5,21 @@ include 'generateLog.php';
 $log = new generateLog();
 
 $_SESSION["logObject"] = $log;
+$t1 = microtime(true);
+
+
 //Work of reciver starts here
 	
-	$file = get_post_data();
-
-	$module = module_identification($file);
-    call_module_manager($module,$file);
-
+	
+			$file = get_post_data();
+			$module = module_identification($file);
+		    call_module_manager($module,$file);
+		    
 //Work of reciver ends here
+
+
+$t1 = microtime(true) - $t1;
+$_SESSION["logObject"]->end("reciver","End... :D  Time Taken -- $t1");
 
 
 	//Function to get data through post request
@@ -21,7 +28,7 @@ $_SESSION["logObject"] = $log;
 				$postdata = file_get_contents("php://input");
                 $file = urldecode($postdata);
                 //Comment this line when posting data through android 
-                $file = substr($file , 2);
+               // $file = substr($file , 2);
                 $_SESSION["logObject"]->info("reciver","Post Data Recived------>>>> $file");	
 				return $file;
 	}
@@ -36,9 +43,7 @@ $_SESSION["logObject"] = $log;
 			       
 			        case JSON_ERROR_NONE:
 			        	$_SESSION["logObject"]->debug("reciver","No json errors");
-			        	
-			       //   echo ' - No json errors';
-			       		break;
+			        	break;
 			        
 			        case JSON_ERROR_DEPTH:
 			        	$_SESSION["logObject"]->error("reciver","Maximum stack depth exceeded");
@@ -47,8 +52,7 @@ $_SESSION["logObject"] = $log;
 			        
 			        case JSON_ERROR_STATE_MISMATCH:
 			        	$_SESSION["logObject"]->error("reciver","Underflow or the modes mismatch");
-
-			            $json_error = "Underflow or the modes mismatch";
+						$json_error = "Underflow or the modes mismatch";
 			        	break;
 			        
 			        case JSON_ERROR_CTRL_CHAR:
@@ -68,7 +72,7 @@ $_SESSION["logObject"] = $log;
 			        
 			        default:
 			        	$_SESSION["logObject"]->error("reciver","Unknown json Error");
-			            $json_error = "Unknown error";
+			            $json_error = "Unknown  json error";
 			        	break;
 		    }
 			//Check file type is json or not
@@ -123,7 +127,7 @@ $_SESSION["logObject"] = $log;
 			$arr = array ('ERROR'=>"Module $module manager not found");
 	    	echo json_encode($arr);
 		
-			//exit();
+			
 
 		}
 
