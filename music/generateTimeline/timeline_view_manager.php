@@ -12,7 +12,7 @@
 		{	
 
 				$_SESSION["logObject"]->info("timeline_view_manager","Timeline view manager running");
-				include 'file_parser.php';
+					include 'file_parser.php';
 				$_SESSION["logObject"]->info("timeline_view_manager","Getting User no");
 					$uid  =  file_parser::get_user_no($file);
 				$_SESSION["logObject"]->debug("timeline_view_manager","User NO- $uid ");
@@ -20,7 +20,15 @@
 					
 				include '../music/databaseModels/contacts_data_handler.php';
 				$_SESSION["logObject"]->info("timeline_view_manager","Getting Wanted Freiends");				
-					$friends = contacts_data_handler::get_wanted_friends($uid);
+					$friendsArray = contacts_data_handler::get_wanted_friends($uid);
+					//var_dump($friendsArray);
+					$friends = "'";
+					foreach ($friendsArray as $key => $value){
+						$friends = $friends . $value. "','";
+					}
+					$friends = rtrim($friends, ",'");
+					$friends =$friends."'";
+				
 				$_SESSION["logObject"]->info("timeline_view_manager","Wanted Friends found--");	
 				include '../music/databaseModels/timeline_data_handler.php';
 
@@ -34,8 +42,6 @@
 		 			$_SESSION["logObject"]->info("timeline_view_manager","Sids for timline after algo-");
 				include '../music/databaseModels/music_data_handler.php';
 					$musicResponse = array();
-					$musicResponse['myNumber'] = "$uid";
-					$musicResponse['module'] = "generateTimeline" ;
 					$musicResponse['response'] = array();
 					$i        = 0 ;
 					$songRank = 1 ;
