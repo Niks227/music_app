@@ -10,29 +10,29 @@ class music_data_handler
 	}
 	public static function get_music_details($sid)
 	{
-		//	echo "<br>Getting Music details from sid- ". $sid;
-		$musicInfo = array();
 		
+		$musicInfo              = array();
+		$musicInfo['available'] = "false"; 
 		include "sqli_connect.php";
+				$sid    = $con->real_escape_string($sid);
 		
 				$query = " SELECT * FROM `music` WHERE `song_id` = $sid ";
 				$result = $con->query($query);
-				if (!$result) {
-				   printf("%s\n", $con->error);
-				   exit();
-				}
-				
-				while ($row = $result->fetch_assoc()) {
-						$musicInfo['title'] = $row['title'];
-						$musicInfo['album'] = $row['album'];
-						$musicInfo['artist'] = $row['artist'];
-						$musicInfo['genre'] = $row['genre'];
-						$musicInfo['date'] = $row['date'];
-						$musicInfo['duration'] = $row['duration'];
-						$musicInfo['albumArtLink'] = $row['album_art_link'];
-				//		$musicInfo['songLink'] = $row['songLink'];	
-						
-							
+		
+				if($result){
+					if ($con->affected_rows == 1) {
+						while ($row = $result->fetch_assoc()) {
+							$musicInfo['available']    = "true";
+							$musicInfo['title']        = $row['title'];
+							$musicInfo['album']        = $row['album'];
+							$musicInfo['artist']       = $row['artist'];
+							$musicInfo['genre']        = $row['genre'];
+							$musicInfo['date']         = $row['date'];
+							$musicInfo['duration']     = $row['duration'];
+							$musicInfo['albumArtLink'] = $row['album_art_link'];
+					//		$musicInfo['songLink']     = $row['songLink'];	
+						}	
+					}		
 				} 
 					
 	       				

@@ -14,7 +14,7 @@
 		{	
 				$status = 0;
 				include "sqli_connect.php";
-				$uid = $con->real_escape_string($uid);
+				$uid    = $con->real_escape_string($uid);
 				$friend = $con->real_escape_string($friend);
 				
 				$wflag = contacts_data_handler::$wanted_flag ;
@@ -136,7 +136,7 @@
 		}
 		public static function get_wanted_friends($uid)
 		{		
-				$status = 0;
+				
 				$friendsArray = array();
 			
 				include "sqli_connect.php";
@@ -162,10 +162,7 @@
 				}
 				
 				include "sqli_close.php";
-				if($query) // will return true if succefull else it will return false
-				{
-					$status = 1;
-				}
+
 				
 				return $friendsArray;
 		}

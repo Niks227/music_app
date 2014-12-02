@@ -51,6 +51,33 @@
 			return $sids;
 			
 		}
+		public static function get_friends_data($friends)
+		{
+			
+			include "sqli_connect.php";
+
+			
+			
+			$sidsScores =array();
+			$sidsScores['sids']   = '';
+			$sidsScores['scores'] = '';
+			$query = " SELECT * FROM timeline_data WHERE uid IN ($friends) "; 
+						
+
+			$result = $con->query($query);
+			if ($result) {
+				while ($row = $result->fetch_assoc()) {
+					$sidsScores['sids']   = $row['sids'];
+					$sidsScores['scores'] = $row['scores']; 
+    			}	
+			
+			}
+			
+    		
+			include "sqli_close.php";
+			return $sidsScores;
+			
+		}
 		public static function get_friends_scores($friends)
 		{	
 			include "sqli_connect.php";

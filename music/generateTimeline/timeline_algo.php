@@ -20,10 +20,10 @@
 
 					for ($i = 0; $i < $n; $i++) {
 						
-						$_SESSION["logObject"]->info("timeline_algo","$i ITeration");
+						$_SESSION["logObject"]->info("timeline_algo","$i Iteration");
 						$sid = substr($sids , $i * $SID_SIZE, $SID_SIZE);
 						$_SESSION["logObject"]->debug("timeline_algo","$sid");
-						//echo "<h2>$sid</h2><br>";
+						
 						if (array_key_exists($sid , $sidList)) {
 							$sidList[$sid] = $sidList[$sid] + intval(substr($scores, $i * $SCORE_SIZE, $SCORE_SIZE));
 						} else
