@@ -13,20 +13,27 @@ class file_parser
 	
 	public static function get_user_no($file)
 	{	
-        $file = stripslashes($file);
+		$ERROR_CODE_LEVEL = 2000;
+		$ERROR_CODE_ROOM  = 40;
 		$decoded_string = json_decode($file);
-  		return $decoded_string->myNumber;
-  		//checkk userno validity
-		
+		if (!isset($decoded_string->myNumber)){
+					$ERROR_NO = 1;
+					$errorCode= $ERROR_CODE_LEVEL + $ERROR_CODE_ROOM + $ERROR_NO ;
+					$error = new errorHandling($errorCode,"myNumber not Found",$_SESSION["logFileNo"]);
+					$error->send();
+					return NULL;
+					
+		}
+		else{
+				return $decoded_string->myNumber;	
+		}
 	}
 	public static function getActivityObjects($file)
 	{
 			include 'activity_object.php';
 			$objectsArray   = array();
-			$file           = stripslashes($file);
-  			$decoded_string = json_decode($file);
-
-  			foreach($decoded_string->userActivity as $data){
+			$decoded_string = json_decode($file);
+			foreach($decoded_string->userActivity as $data){
 			 		
 
   					$dataStatus = file_parser::dataChecker($data);
@@ -45,31 +52,22 @@ class file_parser
 
 	}
 	public static function dataChecker($data)
-	{		$idStatus = 0;
-			$streamingStatus = 0;
+	{		
+			$dataStatus      = 0;
 			
-			$status =0;
-			if( strlen($data->songId)==10 ){
-					$idStatus = 1;
-					
-			}			
-			if( ($data->streaming == 1) || ($data->streaming ==0)  ){
-			
-					$streamingStatus = 1;
-					
-
+			if($data->streaming == 1) {
+				$dataStatus = 1;\\Assuming streaming to be true always temporary solution	
+				$_SESSION["logObject"]->debug("file_parser","Online Streaming detected");
 			}
-		
-			$status = ($idStatus AND  $streamingStatus) ;
-			$_SESSION["logObject"]->debug("file_parser","Data Checker ID Status-- $idStatus");
-			$_SESSION["logObject"]->debug("file_parser","Data Checker Streaming Status-- $streamingStatus");
-			
-			$_SESSION["logObject"]->debug("file_parser","Data Checker Final Status-- $status");
-			return $status;
-
-
+			elseif ($data->streaming == 0) {
+				$_SESSION["logObject"]->debug("file_parser","Streaming 0 detected");
+				if( strlen($data->songId)==10 ){
+					$_SESSION["logObject"]->debug("file_parser","song Id length valid (10)");
+					$dataStatus = 1;
+				}
+			}
+			$_SESSION["logObject"]->debug("file_parser","Data Checker Final Status-- $dataStatus");
+			return $dataStatus;
 	}
-
-
 
 }

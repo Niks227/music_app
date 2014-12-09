@@ -100,6 +100,11 @@
 		}
 		public static function add_user($uid , $songs_ids , $scores){
 				include "sqli_connect.php";
+
+				$uid       = $con->real_escape_string($uid);
+				$songs_ids = $con->real_escape_string($songs_ids);
+				$scores    = $con->real_escape_string($scores);
+				
 				
 				$result = $con->query("INSERT INTO timeline_data (uid, sids, scores)
 												VALUES ('$uid' , '$songs_ids' , '$scores')");
@@ -116,7 +121,12 @@
 		}
 		public static function insert_updated_data($uid , $songs_ids , $scores){
 				include "sqli_connect.php";
-			
+				
+				$uid       = $con->real_escape_string($uid);
+				$songs_ids = $con->real_escape_string($songs_ids);
+				$scores    = $con->real_escape_string($scores);
+				
+				
 			
 				$result = $con->query("UPDATE timeline_data SET sids='$songs_ids',scores ='$scores' where uid = '$uid'");
  				if($result) // will return true if querry ran successfully else it will return false

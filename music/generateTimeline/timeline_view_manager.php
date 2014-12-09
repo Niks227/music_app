@@ -57,7 +57,7 @@
 									$musicResponse['response'][$i]['date']         = $musicInfo['date'];
 									$musicResponse['response'][$i]['duration']     = $musicInfo['duration'];
 									$musicResponse['response'][$i]['albumArtLink'] = $musicInfo['albumArtLink'];
-									$musicResponse['response'][$i]['songLink']     = "http://2015.downloadming1.com/bollywood%20mp3/Zid%20%282014%29/01%20-%20Saanson%20Ko%20-%20DownloadMing.SE.mp3";//$musicInfo['songLink'];
+									$musicResponse['response'][$i]['songLink']     = "http://sound2mp3.com/user-mp3-to/8_LOVE%20DOSE%20-%20Yo%20Yo%20Honey%20Singh.mp3";//$musicInfo['songLink'];
 									$i++;
 
 

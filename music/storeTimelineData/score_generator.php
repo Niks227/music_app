@@ -5,10 +5,10 @@
 */
 class score_generator
 {	
-	private $inAppPlayFactor;
-	private $outAppPlayFactor;
-	private $inAppDownloadFactor;
-	private $outAppDownloadFactor;
+	private $IN_APP_PLAY_FACTOR;
+	private $OUT_APP_PLAY_FACTOR;
+	private $IN_APP_DOWNLOAD_FACTOR;
+	private $OUT_APP_DOWNLOAD_FACTOR;
 	
 	function __construct()
 	{
@@ -20,26 +20,26 @@ class score_generator
 	}
 	public static function  set_factor($activityObject)
 	{
-		$inAppPlayFactor = 5;
-		$outAppPlayFactor = 10;
-		$inAppDownloadFactor = 15;
-		$outAppDownloadFactor = 20; 
+		$IN_APP_PLAY_FACTOR      = 5;
+		$OUT_APP_PLAY_FACTOR     = 10;
+		$IN_APP_DOWNLOAD_FACTOR  = 15;
+		$OUT_APP_DOWNLOAD_FACTOR = 20; 
 				    $action = $activityObject->get_action();
 				    $_SESSION["logObject"]->debug("score_generator","Flag Found-- $action");
 				    if(strcmp( $action,"inAppPlay")==0){
-				    		$factor = $inAppPlayFactor;
+				    		$factor = $IN_APP_PLAY_FACTOR;
 
 					}
 				    else if(strcmp( $action,"outAppPlay")==0){
-				     		$factor = $outAppPlayFactor;
+				     		$factor = $OUT_APP_PLAY_FACTORU;
 
 				    }
 				    else if(strcmp( $action,"inAppDownload")==0){
-				     		$factor = $inAppDownloadFactor;
+				     		$factor = $IN_APP_DOWNLOAD_FACTOR;
 
 				    }
 				    else if(strcmp( $action,"outAppDownload")==0){
-				     		$factor = $outAppDownloadFactor;
+				     		$factor = $OUT_APP_DOWNLOAD_FACTOR;
 
 				    }
 				    else{

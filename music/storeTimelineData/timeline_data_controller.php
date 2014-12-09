@@ -7,13 +7,11 @@
 		private $sqlStatus;
 		function __construct()
 		{
-
 			$this->sqlStatus = 0;
-	
 		}
 		public static function modify($uid , $activityObjects)
 		{
-			$new_sids ='';
+			$new_sids   ='';
 			$new_scores ='';
 			$replyUserAvtivity = array();
 			$replyUserAvtivity['myNumber'] = $uid;
@@ -31,7 +29,8 @@
 				elseif ($object->get_streaming()==1) {
 		//				echo "sound CLoud";
 						$replyUserAvtivity['response'][$i]["postId"] = $object->get_postId();
-						$replyUserAvtivity['response'][$i]["songStatus"] = 0;
+						$replyUserAvtivity['response'][$i]["songStatus"] = 1;
+						
 						$i++;
 				}	
 			}
@@ -43,21 +42,21 @@
 		//	echo "Checing if user exist or a new user<br>";
 			if($result==1){
 		//		echo "User already exists<br>";
-				$old_sids = timeline_data_handler::get_sids($uid);
+				$old_sids   = timeline_data_handler::get_sids($uid);
 				$old_scores = timeline_data_handler::get_scores($uid);
 		//		echo "<br> Old Sids found  - $old_sids <br> Old Scores found - $old_scores<br>";
-				$sqlStatus = timeline_data_controller::update_data($uid , $old_sids , $new_sids , $old_scores , $new_scores);
+				$sqlStatus  = timeline_data_controller::update_data($uid , $old_sids , $new_sids , $old_scores , $new_scores);
 			}
 			else{
 		//		echo "User not exist<br>";
-				if(strcmp($new_sids, '') != 0){
+		//		if(strcmp($new_sids, '') != 0){
 						$sqlStatus =timeline_data_handler::add_user($uid , $new_sids , $new_scores);
 		//				echo $sqlStatus;
-				}
-				else{
+		//		}
+				//else{
 		//			echo "No Songs to add";
-					$sqlStatus = 0;
-				}
+				//	$sqlStatus = 0;
+				//}
 			} 
 
 			foreach ($replyUserAvtivity['response'] as $key => $value) {
