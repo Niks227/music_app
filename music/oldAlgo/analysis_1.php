@@ -1,9 +1,9 @@
 <?php
 require_once('simple_html_dom.php');
 
-function analysis_1($file_name,$title,$album,$artist,$duration,$u_no){
-$link_count=0;
- url_creater:
+function analysis_1($title,$album,$artist){
+    $link_count=0;
+    url_creater:
 
     if($link_count==0){
    //     echo "First link bieng ";
@@ -70,7 +70,7 @@ $link_count=0;
  //       var_dump($theData);    
         $perc_array = calculate_percentage($artist,$title,$theData);
         $max_perc_array = find_max_percentage($perc_array);
-        if ( $max_perc_array[0] > 68){
+        if ( $max_perc_array[0] > 75){
   //              echo "<br><br> INSERTING INT DATABASE <br><BR>";
                 insert_into_db($theData,$max_perc_array[1],$u_no);
                 return TRUE;

@@ -1,149 +1,64 @@
-<?php	
-session_start();
-include 'generateLog.php';
-include 'errorHandling.php';
-
-$log = new generateLog();
-
-$_SESSION["logObject"] = $log;
-$LOG_FILE_NO = $_SESSION["logObject"]->getLatestLogFile();
-$_SESSION["logFileNo"] = $LOG_FILE_NO;
-
-$t1 = microtime(true);
-
-$ERROR_CODE_LEVEL = 1000;
-
-
-//Work of reciver starts here
+<?php
+/**
+* 
+*/
+class oldAlgoReciver 
+{
 	
-	
-			$file = get_post_data();
-			$module = module_identification($file);
-		    call_module_manager($module,$file);
-		    
-//Work of reciver ends here
-
-
-$t1 = microtime(true) - $t1;
-$_SESSION["logObject"]->end("reciver","End... :D  Time Taken -- $t1");
-
-
-	//Function to get data through post request
-	function get_post_data()
-	{   
-				$postdata = file_get_contents("php://input");
-                $file = urldecode($postdata);
-                //Comment this line when posting data through android 
-//                $file = substr($file , 2);
-                $_SESSION["logObject"]->info("reciver","Post Data Recived------>>>> $file");	
-				return $file;
-	}
-	//Function to identify module 
-	function module_identification($file)
+	function __construct()
 	{
-			
-			
-			$decoded_string = json_decode($file);
-			//Checking json error type
-			if($file != NULL){
-					switch (json_last_error()) {
-					       
-					        case JSON_ERROR_NONE:
-					        	$_SESSION["logObject"]->debug("reciver","No json errors");
-					        	$_SESSION["logObject"]->info("reciver","Module Identified - ' $decoded_string->module '"); 
-		 						return $decoded_string->module;
-					        	break;
-					        
-					        case JSON_ERROR_DEPTH:
-					        	$_SESSION["logObject"]->error("reciver","Maximum stack depth exceeded");
-					        	$json_error = "Maximum stack depth exceeded";
-					        	break;
-					        
-					        case JSON_ERROR_STATE_MISMATCH:
-					        	$_SESSION["logObject"]->error("reciver","Underflow or the modes mismatch");
-								$json_error = "Underflow or the modes mismatch";
-					        	break;
-					        
-					        case JSON_ERROR_CTRL_CHAR:
-					        	$_SESSION["logObject"]->error("reciver","Unexpected control character found");
-					            $json_error = "Unexpected control character found";
-					        	break;
-					        
-					        case JSON_ERROR_SYNTAX:
-					        	$_SESSION["logObject"]->error("reciver","Syntax error, malformed JSON");
-					            $json_error = "Syntax error, malformed JSON";
-					        	break;
-					        
-					        case JSON_ERROR_UTF8:
-					        	$_SESSION["logObject"]->error("reciver","Malformed UTF-8 characters, possibly incorrectly encoded");
-					            $json_error = "Malformed UTF-8 characters, possibly incorrectly encoded";
-					        	break;
-					        
-					        default:
-					        	$_SESSION["logObject"]->error("reciver","Unknown json Error");
-					            $json_error = "Unknown  json error";
-					        	break;
-
-				    }
-				    $ERROR_NO = 2;
-				    $errorCode= $GLOBALS["ERROR_CODE_LEVEL"] + $ERROR_NO ;
-				    $error = new errorHandling($errorCode,"$json_error",$_SESSION["logFileNo"]);
-					$error->send();
-			}
-			else{
-					$ERROR_NO = 1;
-				    $errorCode= $GLOBALS["ERROR_CODE_LEVEL"] + $ERROR_NO ;
-					$error = new errorHandling($errorCode,"Null File Recived",$_SESSION["logFileNo"]);
-					$error->send();
-			}
-			
-			
 	}
+	public static function run($badTitle , $badArtist , $badAlbum , $badDuration)
+	{
+		$song_title  =  $badTitle;
+		$song_artist =  $badArtist;
+		$song_album  =  $badAlbum;
 
+		$song_album  = str_replace("&nbsp;","",$song_album);
+		$song_artist = str_replace("&nbsp;","",$song_artist);
+		$song_title  = str_replace("&nbsp;","",$song_title);
 
-
-	//Function to call manager of specified module
-	function call_module_manager($module,$file)
-	{	
-		if(strcmp($module, "generateTimeline")== 0){
-				
-				$_SESSION["logObject"]->info("reciver","Calling Generate Timeline Module Manager");
-				include 'generateTimeline/timeline_view_manager.php';
-				timeline_view_manager::run($file);
+		$song_album  = oldAlgoReciver::check_if_string_alink($song_album);
+		$song_artist = oldAlgoReciver::check_if_string_alink($song_artist);
+		$song_title  = oldAlgoReciver::check_if_string_alink($song_title);
 		
-		}
-		else if(strcmp($module, "storeTimelineData")== 0){
-				$_SESSION["logObject"]->info("reciver","Calling Store Timeline Data Module Manager");
-				include 'storeTimelineData/timeline_data_manager.php';
-				timeline_data_manager::run($file);
-		}
-	    else if(strcmp($module, "contact")== 0){
-	    		$_SESSION["logObject"]->info("reciver","Calling Contacts Manager Module Manager");
-				include 'contactsManager/contacts_manager.php';
-				contacts_manager::run($file);
-		}	
-		else if(strcmp($module, "music")== 0){
-				$_SESSION["logObject"]->info("reciver","Calling Music Module Manager");
-				include 'musicManager/music_manager.php';
-				music_manager::run($file);
+		$song_album  = strtr ($song_album, array ('-' => ''));
+		$song_artist = strtr ($song_artist, array ('-' => ''));
+		$song_title  = strtr ($song_title, array ('-' => ''));
 
-		}
-		else{
-			$_SESSION["logObject"]->error("reciver","Module Manager Not Found");
-			$ERROR_NO = 3;
-			$errorCode= $GLOBALS["ERROR_CODE_LEVEL"] + $ERROR_NO ;
-			$error = new errorHandling($errorCode,"Module Manager Not Found",$_SESSION["logFileNo"]);
-			$error->send();
-		}
+		$song_title  = str_replace(' ', '-', $song_title);   
+		$song_title  = preg_replace('/[^A-Za-z0-9\-]/', '', $song_title);
+		$song_title  = str_replace('-', ' ', $song_title);
 
+		$song_album_space_replaced_with_plus  = strtr ($song_album, array (' ' => '+'));
+		$song_artist_space_replaced_with_plus = strtr ($song_artist, array (' ' => '+'));
+		$song_title_space_replaced_with_plus  = strtr ($song_title, array (' ' => '+'));
+
+		$analysis1_result=analysis_1( $song_title_space_replaced_with_plus , $song_album_space_replaced_with_plus , $song_artist_space_replaced_with_plus);
+	    if($analysis1_result==true){
+            //$querry01 = "DELETE FROM or_bad_song_info WHERE obs_id1='$obs_id1'";
+            //$result =    mysql_query($querry01);
+                 
+        }
+		else if($analysis1_result==false){
+			$analysis2_result = analysis_2($song_title_space_replaced_with_plus,$song_album_space_replaced_with_plus,$song_artist_space_replaced_with_plus);
+            if($analysis2_result ==true){
+					//$querry02 = "DELETE FROM or_bad_song_info WHERE obs_id1='$obs_id1'";
+            		//$result =    mysql_query($querry02);	 
+            }		
+            else if($analysis2_result ==false){
+				 	$analysis3_result = analysis_3($song_title_space_replaced_with_plus,$song_album_space_replaced_with_plus,$song_artist_space_replaced_with_plus);
+			}	
+		}
+	
 	}
-//HTML CONTENT TO MAKE A FORM	
+	public static function check_if_string_alink($string)
+	{	
+		$pattern = "/[a-zA-Z]*[:\/\/]*[A-Za-z0-9\-_]+\.+[A-Za-z0-9\.\/%&=\?\-_]+/i";
+		$replacement = "";
+		$string_without_link = preg_replace($pattern, $replacement, $string);
+		return $string_without_link;
+	}
+}
+
 ?>
-<html>
-<body>
-  <form action="<?php $_PHP_SELF ?>" method="POST">
-		<input type="text" name=' ' />
-  		<input type="submit" />
-  </form>
-</body>
-</html>

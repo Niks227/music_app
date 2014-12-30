@@ -44,7 +44,7 @@ class file_parser
 	}
 	public static function get_songs_array($file)
 	{	
-		echo "<Br>Songs fetching started";
+		//echo "<Br>Songs fetching started";
 		$songs_array = array();
 		$row = 0;
 		
@@ -53,23 +53,23 @@ class file_parser
 		foreach($decoded_string->songData as $song){
 						
 				    		$xml = simplexml_load_string($song->fp);
-				    		$songs_array[$row]['xml'] = $song->fp;
-							echo "<br> Fingerprinting Algorithm-".$xml->ALGORITHM->NAME ;
-				    		$songs_array[$row]['fingerprint_algo'] = $xml->ALGORITHM->NAME;
-				    		echo "<br> Algorithm Version-".$xml->ALGORITHM->VERSION ;
+				    		$songs_array[$row]['xml']                 = $song->fp;
+							//echo "<br> Fingerprinting Algorithm-".$xml->ALGORITHM->NAME ;
+				    		$songs_array[$row]['fingerprint_algo']    = $xml->ALGORITHM->NAME;
+				    		//echo "<br> Algorithm Version-".$xml->ALGORITHM->VERSION ;
 				    		$songs_array[$row]['fingerprint_version'] = $xml->ALGORITHM->VERSION;
-				    		echo "<br> Fingerprint-".$xml->FP_BLOCKS->FP_BLOCK."<br>" ;
-							$songs_array[$row]['fingerprint'] = $xml->FP_BLOCKS->FP_BLOCK;
-				    		echo "<br>Filename- $song->fileName";
-				    		$songs_array[$row]['filename'] = $song->fileName;
-				    		echo "<br>Title- $song->title";
-				    		$songs_array[$row]['title'] = $song->title;
-				    		echo "<br>Artist- $song->artist";
-				    		$songs_array[$row]['artist'] = $song->artist;
-				    		echo "<br>Album- $song->album";
-				    		$songs_array[$row]['album'] = $song->album;
-				    		echo "<br>Duration- $song->duration";
-				    		$songs_array[$row]['duration'] = $song->duration;
+				    		//echo "<br> Fingerprint-".$xml->FP_BLOCKS->FP_BLOCK."<br>" ;
+							$songs_array[$row]['fingerprint']         = $xml->FP_BLOCKS->FP_BLOCK;
+				    		//echo "<br>Filename- $song->fileName";
+				    		$songs_array[$row]['filename']            = $song->fileName;
+				    		//echo "<br>Title- $song->title";
+				    		$songs_array[$row]['title']               = $song->title;
+				    		///echo "<br>Artist- $song->artist";
+				    		$songs_array[$row]['artist']              = $song->artist;
+				    		//echo "<br>Album- $song->album";
+				    		$songs_array[$row]['album']               = $song->album;
+				    		//echo "<br>Duration- $song->duration";
+				    		$songs_array[$row]['duration']            = $song->duration;
 				    		$row++;
 		}
 		//var_dump($songs_array);

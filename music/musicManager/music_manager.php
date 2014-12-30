@@ -153,6 +153,7 @@ class music_manager
 								\"status\":\"1\"
 							 } 
 						";
+				$old_algo_status = 0;
 			$_SESSION["logObject"]->info("music_manager","Freeing User's Browser ");
 			music_manager::freeUserBrowser($response);
 			$_SESSION["logObject"]->debug("music_manager","From the received json file organise all songs information in an array ");
@@ -160,14 +161,15 @@ class music_manager
 			$_SESSION["logObject"]->debug("music_manager","For each Song repeat identification algorithms");
 			foreach ($songs_array as $song) {
 				
-				$fp_xml = $song['xml'];
-			
-				$fp_algo = $song['fingerprint_algo'];
-
-				$fp_ver = $song['fingerprint_version'];
-				$fp = $song['fingerprint'];
-				$duration = $song['duration']; 
-			
+				$fp_xml       =   $song['xml'];
+				$fp_algo      =   $song['fingerprint_algo'];
+				$fp_ver       =   $song['fingerprint_version'];
+				$fp           =   $song['fingerprint'];
+				$duration     =   $song['duration']; 
+	            $badTitle     =   $song['title'];	
+	            $badArtist    =   $song['artist'];
+	            $badAlbum     =   $song['album'];
+	            $badDuration  =   $song['duration'];	
 				
 				$_SESSION["logObject"]->debug("music_manager","New Song");
 				$_SESSION["logObject"]->debug("music_manager","Using Grace-note");
@@ -198,16 +200,17 @@ class music_manager
 				else{
 					$_SESSION["logObject"]->debug("music_manager","Grace-note could not work.. :( ");
 					$_SESSION["logObject"]->debug("music_manager","Will Proceed to old algorithm");
-//					old_algo();
-//					if(old_algo_status=='ok'){
-//							proceed();
-//					}
-//					else{
-//						echo "store incomplete in table";
-					$_SESSION["logObject"]->debug("music_manager","After failure of grace-note if Old Algo also fail");
-					$_SESSION["logObject"]->debug("music_manager","Then insert in unidentified fingerprints");
+					$old_algo_status = old_algo($badTitle , $badArtist , $badAlbum , $badDuration);
+					if($old_algo_status == 1){
+						music_manager::proceed($fp_xml , $myNumber,$gracenote_title , $gracenote_album , $gracenote_artist ,$gracenote_genre , $gracenote_date , $duration);
+
+					}
+					else{
+					//	echo "store incomplete in table";
+						$_SESSION["logObject"]->debug("music_manager","After failure of grace-note if Old Algo also fail");
+						$_SESSION["logObject"]->debug("music_manager","Then insert in unidentified fingerprints");
 						unidentified_fps_handler::insert_unidentified_fp($fp_xml, $myNumber);
-//					}
+					}
 
 				}	
 			}
@@ -215,6 +218,10 @@ class music_manager
 			
 
 
+	}
+	public static function old_algo($badTitle , $badArtist , $badAlbum , $badDuration)
+	{	
+		return 0;
 	}
 	public static function proceed($fp_xml , $myNumber , $gracenote_title , $gracenote_album , $gracenote_artist ,$gracenote_genre , $gracenote_date, $duration)
 	{
