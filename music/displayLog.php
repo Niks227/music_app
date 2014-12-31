@@ -30,21 +30,21 @@ class displayLog
 $log = new displayLog();
 
 
-if (ob_get_level() == 0) ob_start();
+//if (ob_get_level() == 0) ob_start();
 
-for ($i = 0;; $i++){
+//for ($i = 0;; $i++){
 
         $log->display();
-        echo str_pad('',4096)."\n";   
+       // echo str_pad('',4096)."\n";   
 
-        ob_flush();
-        flush();
-        sleep(2);
-}
+      //  ob_flush();
+    //    flush();
+  //      sleep(2);
+//}
 
 
 
-ob_end_flush();
+//ob_end_flush();
 
 
 ?>

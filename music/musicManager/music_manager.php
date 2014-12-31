@@ -235,6 +235,7 @@ class music_manager
 			$art_url     = 	album_art_finder::get_album_art($title , $album , $artist);
 			$_SESSION["logObject"]->debug("music_manager","Song Link Fetcher Started");
 			$song_link   =  linkManager::run($title, $album , $artist, $duration, $date); 
+			$_SESSION["logObject"]->debug("music_manager","Song LINK -- $song_link");
 			$_SESSION["logObject"]->debug("music_manager","Storing Data successfully in Database");
 			music_data_handler::store_music_data($song_id , $title , $album , $artist ,$genre , $duration ,  $date , $art_url, $song_link);
 			user_songs_handler::add_user_song($myNumber , $song_id , $fp_xml);

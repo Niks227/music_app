@@ -10,23 +10,27 @@ class linkManager
 	}
 	public static function run($title, $album , $artist, $duration, $date)
 	{
-		require_once 'Soundcloud.php';
-		$trackNo   =  linkManager::searchTrackNo($title, $album , $artist, $duration, $date);
-		$apiLink   =  linkManager::fetchLink($trackNo);
-		$songLink  =  linkManager::addClientId($apiLink);
-		return $songLink;
+			require_once 'Soundcloud.php';
+			$songLink   =  linkManager::getLink($title, $album , $artist, $duration, $date);
+			return $songLink;
 	}
-	public static function searchTrackNo($title, $album , $artist, $duration, $date)
+	public static function getLink($title, $album , $artist, $duration, $date)
 	{
-
-	}
-	public static function fetchLink($trackNo)
-	{
-		
-	}
-	public static function addClientId($apiLink)
-	{
-
+			$client = new Services_Soundcloud('342cce7aed55518c7848985ab2ec3023', '814c1b39d957a2423d04992c0d514b2e');
+			$tracks = $client->get('tracks', array('q' => "$title", 'tags'=> '', 'limit' => '9' , 'streamable' =>'true' , 'order'=> 'hotness'));
+			$tracks_array  =  array();
+			$tracks_array  =  json_decode($tracks);
+			$i=0;
+			foreach ($tracks_array as $key => $value) {
+				//var_dump($tracks_array[$i]->streamable);
+				if($tracks_array[$i]->streamable == true){
+					$songLink = $tracks_array[$i]->stream_url."?client_id=342cce7aed55518c7848985ab2ec3023";
+					break;
+				}
+				$i++;
+			}
+//			echo "$songLink";
+			return $songLink;
 	}
 }
 ?>

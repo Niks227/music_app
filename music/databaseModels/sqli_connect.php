@@ -1,11 +1,10 @@
 <?php
-	
 //localhost
-	$SQL_SERVER = 'localhost';
+/*	$SQL_SERVER = 'localhost';
 	$SQL_USER = 'root';
 	$SQL_PASS = '';
 	$SQL_DB = 'music_app';
-
+*/
 //5gbfree
 /*	
 	$SQL_SERVER = 'localhost';
@@ -13,6 +12,12 @@
 	$SQL_PASS = 'qwerty12345';
 	$SQL_DB = 'niksqwer_music_app';
 */
+//Godaddy
+	$SQL_SERVER = 'localhost';
+	$SQL_USER = 'niks';
+	$SQL_PASS = 'qwerty12345';
+	$SQL_DB = 'music_app';
+
 	$con =  new mysqli($SQL_SERVER,$SQL_USER,$SQL_PASS,$SQL_DB);
 
 	if ($con->connect_errno) {
