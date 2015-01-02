@@ -34,7 +34,11 @@ $_SESSION["logObject"]->end("reciver","End... :D  Time Taken -- $t1");
 				$postdata = file_get_contents("php://input");
                 $file = urldecode($postdata);
                 //Comment this line when posting data through android 
+<<<<<<< HEAD
                 //$file = substr($file , 2);
+=======
+                $file = substr($file , 2);
+>>>>>>> origin/master
                 $_SESSION["logObject"]->info("reciver","Post Data Recived------>>>> $file");	
 				return $file;
 	}

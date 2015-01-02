@@ -18,8 +18,13 @@ class music_manager
 		include '../music/databaseModels/music_data_handler.php';
 		include '../music/databaseModels/user_songs_handler.php';
 		include '../music/databaseModels/unidentified_fps_handler.php';
+<<<<<<< HEAD
 		//include '../music/oldAlgo/oldAlgoReciver.php';
 		//include '../music/oldAlgo/analysis_1.php';
+=======
+		include '../music/oldAlgo/oldAlgoReciver.php';
+		include '../music/oldAlgo/analysis_1.php';
+>>>>>>> origin/master
 		include '../music/songLink/linkManager.php';
 
 		$_SESSION["logObject"]->debug("music_manager","Fetching User Number");
@@ -160,8 +165,12 @@ class music_manager
 						";
 				
 			$_SESSION["logObject"]->info("music_manager","Freeing User's Browser ");
+<<<<<<< HEAD
 			music_manager::freeUserBrowser($response);
 			sleep(3);
+=======
+		//	music_manager::freeUserBrowser($response);
+>>>>>>> origin/master
 			$_SESSION["logObject"]->debug("music_manager","From the received json file organise all songs information in an array ");
 			$songs_array = file_parser::get_songs_array($file);
 			$_SESSION["logObject"]->debug("music_manager","For each Song repeat identification algorithms");
@@ -204,8 +213,13 @@ class music_manager
 				else{
 					$_SESSION["logObject"]->debug("music_manager","Grace-note could not work.. :( ");
 					$_SESSION["logObject"]->debug("music_manager","Will Proceed to old algorithm");
+<<<<<<< HEAD
 	//				$old_algo_result = oldAlgoReciver::run($badTitle , $badArtist , $badAlbum , $badDuration);
 					$old_algo_result['status'] = false;
+=======
+					$old_algo_result = oldAlgoReciver::run($badTitle , $badArtist , $badAlbum , $badDuration);
+					//$old_algo_result['status'] = false;
+>>>>>>> origin/master
 					if($old_algo_result['status'] == true){
 						$date  = '';
 						$album = '';
