@@ -19,8 +19,8 @@ class errorHandling
 		
 			$arr = array ('errorCode'=>"$this->ERROR_CODE",'errorMessage'=>"$this->ERROR_MSG");
 		    echo json_encode($arr);
-			errorHandling::tempMail('niksagg227@gmail.com', 'Social Music Error Reportiong' , "ERROR CODE-- <$this->ERROR_CODE>          ERROR MESSAGE-- <$this->ERROR_MSG> LOG FILE-- <$this->LOG_FILE_NO>" );
-			exit();
+		//	errorHandling::tempMail('niksagg227@gmail.com', 'Social Music Error Reportiong' , "ERROR CODE-- <$this->ERROR_CODE>          ERROR MESSAGE-- <$this->ERROR_MSG> LOG FILE-- <$this->LOG_FILE_NO>" );
+		//	exit();
 
 	}
 	public static function tempMail($to , $subject , $message)

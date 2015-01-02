@@ -62,13 +62,13 @@
 			$sidsScores['sids']   = '';
 			$sidsScores['scores'] = '';
 			$query = " SELECT * FROM timeline_data WHERE uid IN ($friends) "; 
-						
+			$_SESSION["logObject"]->debug("timeline_view_manager","Sids String-- $query END");			
 
 			$result = $con->query($query);
 			if ($result) {
 				while ($row = $result->fetch_assoc()) {
-					$sidsScores['sids']   = $row['sids'];
-					$sidsScores['scores'] = $row['scores']; 
+					$sidsScores['sids']   = $sidsScores['sids'].$row['sids'];
+					$sidsScores['scores'] = $sidsScores['scores'].$row['scores']; 
     			}	
 			
 			}
@@ -104,7 +104,7 @@
 				$uid       = $con->real_escape_string($uid);
 				$songs_ids = $con->real_escape_string($songs_ids);
 				$scores    = $con->real_escape_string($scores);
-				
+				$_SESSION["logObject"]->end("reciver","$uid $songs_ids $scores");
 				
 				$result = $con->query("INSERT INTO timeline_data (uid, sids, scores)
 												VALUES ('$uid' , '$songs_ids' , '$scores')");

@@ -77,7 +77,7 @@ class file_parser
 	}
 	public static function get_gracenote_title($data)
 	{	
-		echo "<br>Gracenote TITLE --->".$data["RESPONSE"]["ALBUM"]["TRACK"]["TITLE"];
+	//	echo "<br>Gracenote TITLE --->".$data["RESPONSE"]["ALBUM"]["TRACK"]["TITLE"];
 		return $data["RESPONSE"]["ALBUM"]["TRACK"]["TITLE"];
 	}
 	public static function get_gracenote_artist($data)
@@ -88,24 +88,24 @@ class file_parser
 			$artist = $data["RESPONSE"]["ALBUM"]["TRACK"]["ARTIST"];
 			
 		}
-		echo "<br>Gracenote artist --->".$artist;
+	//	echo "<br>Gracenote artist --->".$artist;
 		return $artist;
 	}
 	public static function get_gracenote_album($data)
 	{
-		echo "<br>Gracenote album --->".$data["RESPONSE"]["ALBUM"]["TITLE"];
+	//	echo "<br>Gracenote album --->".$data["RESPONSE"]["ALBUM"]["TITLE"];
 		return $data["RESPONSE"]["ALBUM"]["TITLE"];
 	}
 	public static function get_gracenote_genre($data)
 	{	
-		echo "<br>Gracenote genre --->". $data["RESPONSE"]["ALBUM"]["GENRE"];
+	//	echo "<br>Gracenote genre --->". $data["RESPONSE"]["ALBUM"]["GENRE"];
 		return $data["RESPONSE"]["ALBUM"]["GENRE"];
 	}
 
 	public static function get_gracenote_date($data)
 	{	
 		if(isset($data["RESPONSE"]["ALBUM"]["DATE"])){
-				echo "<br>Gracenote DAte --->". $data["RESPONSE"]["ALBUM"]["DATE"];
+	//			echo "<br>Gracenote DAte --->". $data["RESPONSE"]["ALBUM"]["DATE"];
 				return $data["RESPONSE"]["ALBUM"]["DATE"];
 	
 		}

@@ -23,6 +23,7 @@ class album_art_finder
             $art_url ='';
             $search = $gracenote_album;
             $url = 'http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/wa/wsSearch?term='.urlencode($search).'&limit=1';
+//            echo $url; 
             $obj = json_decode(file_get_contents($url));
             $results = array();
             foreach ($obj->results as $result) {
@@ -34,15 +35,16 @@ class album_art_finder
                     $data['hires'] = $hires;
                     $data['hires'] = str_replace('100x100', '1200x1200', $result->artworkUrl100);
                     $results[] = $data;
-                    var_dump($data);
+                    //var_dump($data);
                     $art_url = $results[0]['hires'];
-                    echo "<br>itunes art--->>>>".$art_url."<br>";
+                    //echo "<br>itunes art--->>>>".$art_url."<br>";
                         
                     return $art_url;  
             }
             if(strcmp($art_url,'')==0){
                     $search = $gracenote_title;
                     $url = 'http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/wa/wsSearch?term='.urlencode($search).'&limit=1';
+  //                  echo $url;
                     $obj = json_decode(file_get_contents($url));
                     $results = array();
                     foreach ($obj->results as $result) {
@@ -54,9 +56,9 @@ class album_art_finder
                             $data['hires'] = $hires;
                             $data['hires'] = str_replace('100x100', '1200x1200', $result->artworkUrl100);
                             $results[] = $data;
-                            var_dump($data);
+    //                        var_dump($data);
                             $art_url = $results[0]['hires'];
-                            echo "<br>itunes art--->>>>".$art_url."<br>";
+      //                      echo "<br>itunes art--->>>>".$art_url."<br>";
                                 
                             return $art_url;  
                     }

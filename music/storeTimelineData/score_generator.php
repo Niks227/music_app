@@ -31,7 +31,7 @@ class score_generator
 
 					}
 				    else if(strcmp( $action,"outAppPlay")==0){
-				     		$factor = $OUT_APP_PLAY_FACTORU;
+				     		$factor = $OUT_APP_PLAY_FACTOR;
 
 				    }
 				    else if(strcmp( $action,"inAppDownload")==0){

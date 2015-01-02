@@ -56,7 +56,7 @@ class file_parser
 			$dataStatus      = 0;
 			
 			if($data->streaming == 1) {
-				$dataStatus = 1;\\Assuming streaming to be true always temporary solution	
+				$dataStatus = 1;//Assuming streaming to be true always temporary solution	
 				$_SESSION["logObject"]->debug("file_parser","Online Streaming detected");
 			}
 			elseif ($data->streaming == 0) {
